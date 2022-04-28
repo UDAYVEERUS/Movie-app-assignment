@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+    background-image: url("https://wallpapercave.com/wp/wp5435701.jpg");
+    background-size: 40%;
+    animation: gradient 10s ease infinite;
+
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+#uday {
+    margin: 10px;
+    padding: 5px;
+    height: 40px;
+    width: 20%;
+    font-size: 35px;
+    text-align: center;
+    background-color: yellow;
+}
+
+button {
+    padding: 5px;
+    height: 30px;
+    width: 10%;
+    background-color: pink;
+    font-size: 15px;
+}
+button:hover{
+    background-color: rgb(214, 210, 210);
+}
+
+img {
+    margin: 10px;
+    margin-left: 40%;
+    display: flex;
+    box-shadow: rgba(44, 175, 27, 0.685) 0px 54px 55px, rgba(67, 209, 24, 0.74) 0px -12px 30px, rgba(196, 23, 23, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(196, 47, 47, 0) 0px -3px 5px;
+    width: 20%;
+}
+
+p {
+    margin-left: 40%;
+    margin-top: -5px;
+    color: whitesmoke;
+    font-size: 20px;
+}
+
+h1 {
+    -webkit-animation: glow 1s ease-in-out infinite alternate;
+    -moz-animation: glow 1s ease-in-out infinite alternate;
+    animation: glow 1s ease-in-out infinite alternate;
+    margin: auto;
+    margin-top: 10%;
+    display: block;
+    color: aquamarine;
+    width: 30%;
+    text-align: center;
+    font-size: 50px;
+    border-radius: 10px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+
+}
+
+@-webkit-keyframes glow {
+    from {
+        text-shadow: 0 0 10px #eeeeee, 0 0 20px #000000, 0 0 30px #000000, 0 0 40px #000000,
+            0 0 50px #84549b, 0 0 60px #9554b3, 0 0 70px #9554b3;
+    }
+
+    to {
+        text-shadow: 0 0 20px #eeeeee, 0 0 30px #f04dffd3, 0 0 40px #ff4da6, 0 0 50px #ff4da6,
+            0 0 60px #824dffb2
+    }
+}
+
+select {
+    padding: 10px;
+    background-color: transparent;
+    border: 1px solid white;
+    color: white;
+    margin-left: 800px;
+}
+
+select>option {
+    background-color: grey;
+}
+
+h3 {
+    text-align: center;
+    color: aliceblue;
+}
+
+#navbar{
+    /* display: flex; */
+    /* border: 1px solid black; */
+    justify-content: space-evenly;
+    width: 100%;
+     /* background-color: #ff4da6;  */
+}
+    </style>
+</head>
+<body>
+    <div id="navbar">
+        <input type="text" id="uday" placeholder="Search movie ">
+        <button  onclick="search()">Search</button>
+        <select>
+            <option value="English">English</option>
+        </select>
+    </div>
+
+    <div id="container">
+        <h1>You can search any movie name</h1>
+
+    </div>
+</body>
+<script>
+    let url = `https://www.omdbapi.com/?apikey=3bc6bab9&t=`
+let container = document.getElementById("container")
+async function getMovie() {
+    try {
+
+        let res = await fetch(url)
+
+        let data = await res.json()
+
+        appendsearch(data)
+
+    }
+    catch (err) {
+
+        console.log("Movie could not found", err);
+    }
+
+}
+function appendsearch(d) {
+    console.log(d);
+    container.textContent = null
+
+    let div = document.createElement("div")
+
+    let name = document.createElement("p")
+    name.textContent = `Movie Name :- ${d.Title}`
+
+    let image = document.createElement("img")
+    image.src = d.Poster
+
+    let release_date = document.createElement('p')
+    release_date.textContent = `Released :- ${d.Released}`
+
+    let actors = document.createElement('p')
+    actors.textContent = `Actors :- ${d.Actors}`
+
+    let runtime = document.createElement('p')
+    runtime.textContent = `Runtime ⏱ :- ${d.Runtime}`
+
+    let year = document.createElement('p')
+    year.textContent = `Year :- ${d.Year}`
+
+    let imdb_rating = document.createElement('p')
+    imdb_rating.textContent = `Rating :- ${d.imdbRating}⭐`
+    if (Number(d.imdbRating > 8.5)) {
+        div.append(image, name, year, actors, runtime, imdb_rating, release_date)
+    }
+    else {
+        div.append(image, name, year, actors, runtime, release_date)
+    }
+
+    container.append(div)
+
+}
+function search() {
+
+    let movie = document.getElementById("sanju").value
+    if (movie == "") {
+        alert("Enter movie name")
+    }
+    else {
+        url = `https://www.omdbapi.com/?apikey=e3148ffb&t=${movie}`
+        getMovie()
+    }
+
+}
+</script>
+</html>
